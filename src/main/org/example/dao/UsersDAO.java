@@ -3,18 +3,37 @@ package org.example.dao;
 import org.example.model.User;
 import org.example.util.DBUtils;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Set;
 
 public class UsersDAO extends AbstractDAO<User>{
 
     @Override
     public boolean insert(User user) {
+
+        String sql = "INSERT INTO user (name, email, password) VALUES (?, ?, ?)";
+
+        try(Connection connection = DBUtils.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql);) {
+
+          pstmt.setString(1, user.getName());
+          pstmt.setString(2, user.getEmail());
+          pstmt.setString(3, user.getPsw());
+
+          if (pstmt.executeUpdate() == 1) {
+              System.out.println("User was added in DB successfully");
+              return true;
+          }
+          // должен вернуть 1, мы добавляем строго одного пользователя
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
         return false;
     }
+
+
     @Override
     public boolean update(User user) {
         return false;
