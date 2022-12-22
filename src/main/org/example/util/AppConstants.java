@@ -11,4 +11,8 @@ public class AppConstants {
     public static final String DB_USER = "root";
     public static final String DB_PASSWORD = "";
 
+    public static final String MAIL_ACC = "j3021@rambler.ru";
+
+    public static final String MAIL_PWD = "Java_123";
+
 }

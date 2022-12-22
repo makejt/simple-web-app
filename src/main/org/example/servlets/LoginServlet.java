@@ -1,7 +1,7 @@
 package org.example.servlets;
 
-import org.example.util.AppConstants;
-
+import org.example.dao.UsersDAO;
+import org.example.model.User;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,23 +19,22 @@ public class LoginServlet extends HttpServlet {
         RequestDispatcher dispatcher = req.getRequestDispatcher("login.html");
         dispatcher.forward(req, resp);
     }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String email = req.getParameter("email");
+        String email = req.getParameter("email").trim();
         String password = req.getParameter("psw");
 
-        if(email.trim().equalsIgnoreCase(AppConstants.USER_EMAIL) && password.equals(AppConstants.USER_PSW)) {
+        UsersDAO dao = new UsersDAO();
+        User user = dao.getByEmail(email);
+
+        if (email.equalsIgnoreCase(user.getEmail()) && password.equals(user.getPsw())) {
             resp.getWriter().println("Hello, welcome back");
+
         } else {
             resp.setContentType("text/html;charset=UTF-8");
-            RequestDispatcher rd = req.getRequestDispatcher("login.html");
+            RequestDispatcher dispatcher = req.getRequestDispatcher("login.html");
             resp.getWriter().println("Bad credentials");
-            rd.include(req, resp);
+            dispatcher.include(req, resp);
         }
-
-
-
-
     }
 }

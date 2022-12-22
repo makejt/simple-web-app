@@ -33,16 +33,17 @@ public class UsersDAO extends AbstractDAO<User>{
     }
 
     public User getByEmail(String email) {
-        Connection connection = DBUtils.getConnection();
-        String select = "SELECT * FROM users WHERE email = '" + email + "'";
-
-        Statement stmt = null;
-        ResultSet rs = null;
         User user = null;
+        Statement st = null;
+        ResultSet rs = null;
+
+        Connection connection = DBUtils.getConnection();
+
+        String select = "SELECT * FROM user WHERE email = '" + email + "'";
 
         try {
-            stmt = connection.createStatement();
-            rs = stmt.executeQuery(select);
+            st = connection.createStatement();
+            rs = st.executeQuery(select);
 
             if (rs.next()) {
                 user = new User();
@@ -51,16 +52,14 @@ public class UsersDAO extends AbstractDAO<User>{
                 user.setName(rs.getString("name"));
                 user.setPsw(rs.getString("password"));
             } else {
-                System.out.println ("User is not found by email" + email);
+                System.out.println ("User is not found by email " + email);
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        } finally {
-            DBUtils.release(connection, stmt, null, null);
         }
-
+        catch (SQLException e) {
+            throw new RuntimeException();
+        } finally {
+            DBUtils.release(connection, st, null, rs);
+        }
         return user;
     }
 }
