@@ -2,6 +2,8 @@ package org.example.servlets;
 
 import org.example.dao.UsersDAO;
 import org.example.model.User;
+import org.example.util.EncryptDecryptUtils;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,7 +24,8 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email").trim();
-        String password = req.getParameter("psw");
+
+        String password = EncryptDecryptUtils.encrypt(req.getParameter("psw"));
 
         UsersDAO dao = new UsersDAO();
         User user = dao.getByEmail(email);

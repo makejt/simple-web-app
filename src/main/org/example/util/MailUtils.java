@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.Properties;
 public class MailUtils {
 
-//    private static Properties g_prop = new Properties();
-//
+    private static Properties g_prop = new Properties();
+
 //    static {
 //        g_prop.put("mail.smtp.host", "smtp.gmail.com");
 //        g_prop.put("mail.smtp.port", "587");
@@ -16,18 +16,38 @@ public class MailUtils {
 //        g_prop.put("mail.smtp.starttls.enable", "true"); //TLS
 //    }
 
-    private static Properties prop = new Properties();
+//    static {
+//        g_prop.put("mail.smtp.host", "smtp.mail.ru");
+//        g_prop.put("mail.smtp.port", "465");
+//        g_prop.put("mail.smtp.auth", "true");
+//        g_prop.put("mail.smtp.starttls.enable", "true"); //TLS
+//    }
+
 
     static {
-        prop.put("mail.smtp.host", "smtp.rambler.ru");
-        prop.put("mail.smtp.port", "2525");
-        prop.put("mail.smtp.auth", "true");
-        prop.put("mail.smtp.starttls.enable", "true"); //TLS
+        g_prop.setProperty("mail.transport.protocol", "smtp");
+        g_prop.setProperty("mail.host", "smtp.mail.ru");
+        g_prop.put("mail.smtp.auth", "true");
+        g_prop.put("mail.smtp.port", "465");
+        g_prop.put("mail.smtp.socketFactory.port", "465");
+        g_prop.put("mail.smtp.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
+        g_prop.put("mail.smtp.socketFactory.fallback", "false");
+        g_prop.setProperty("mail.smtp.quitwait", "false");
     }
+
+//    private static Properties prop = new Properties();
+//
+//    static {
+//        prop.put("mail.smtp.host", "smtp.rambler.ru");
+//        prop.put("mail.smtp.port", "2525");
+//        prop.put("mail.smtp.auth", "true");
+//        prop.put("mail.smtp.starttls.enable", "true"); //TLS
+//    }
 
 
     private static Session getSession(){
-        return Session.getInstance(prop,
+        return Session.getInstance(g_prop,
                 new Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(AppConstants.MAIL_ACC, AppConstants.MAIL_PWD);
@@ -106,7 +126,7 @@ public class MailUtils {
 
     public static void main(String[] args) {
 
-        send("", "TEST", "TEST");
+        send(AppConstants.MAIL_ACC, "TEST", "TEST");
 
     }
 }

@@ -2,6 +2,7 @@ package org.example.servlets;
 
 import org.example.dao.UsersDAO;
 import org.example.model.User;
+import org.example.util.EncryptDecryptUtils;
 import org.example.util.IOUtils;
 import org.example.util.MailUtils;
 
@@ -25,11 +26,12 @@ public class RegServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name").trim();
         String email = req.getParameter("email").trim();
-        String password1 = req.getParameter("password1");
-        String password2 = req.getParameter("password2");
+
+        String password1 = EncryptDecryptUtils.encrypt(req.getParameter("password1"));
+        String password2 = EncryptDecryptUtils.encrypt(req.getParameter("password2"));
 
         RequestDispatcher dispatcher = req.getRequestDispatcher("reg.html");
-        resp.setContentType("text/html;charset=UTF-8.");
+        resp.setContentType("text/html;charset=UTF-8");
 
         // не совпадают пароль1 и пароль2
         if (!password1.equals(password2)) {
@@ -70,10 +72,10 @@ public class RegServlet extends HttpServlet {
 
         if (added) {
 
-            String content = IOUtils.readFileBuff("src/main/webapp/templates/activation.html");
+            String content = IOUtils.readFileBuff("C:\\Users\\makei\\IdeaProjects\\simple-web-app\\src\\main\\webapp\\templates\\activation.html");
             content = content.replace
                     ("{*}", "http://localhost:8080/simple-web-app/activate?email=" + email);
-            MailUtils.send(email, "activation", "", null);
+            MailUtils.send(email, "activation", content, null);
 
             resp.getWriter().println("Thanks for registration. Check your email-box");
         }
@@ -84,4 +86,5 @@ public class RegServlet extends HttpServlet {
         }
 
     }
-}
+
+ }
