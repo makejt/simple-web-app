@@ -35,7 +35,6 @@ public class RegServlet extends HttpServlet {
 
         // не совпадают пароль1 и пароль2
         if (!password1.equals(password2)) {
-
             resp.getWriter().println("Passwords are not equals");
             dispatcher.include(req, resp);
             return;
@@ -71,20 +70,17 @@ public class RegServlet extends HttpServlet {
         // добавим IOUtils
 
         if (added) {
-
-            String content = IOUtils.readFileBuff("C:\\Users\\makei\\IdeaProjects\\simple-web-app\\src\\main\\webapp\\templates\\activation.html");
+            String content = IOUtils.readFileBuff
+                    ("C:\\Users\\makei\\IdeaProjects\\simple-web-app\\src\\main\\webapp\\templates\\activation.html");
             content = content.replace
                     ("{*}", "http://localhost:8080/simple-web-app/activate?email=" + email);
             MailUtils.send(email, "activation", content, null);
 
             resp.getWriter().println("Thanks for registration. Check your email-box");
         }
-
         else {
             resp.getWriter().println("Some error on server side");
             dispatcher.include(req, resp);
         }
-
     }
-
  }

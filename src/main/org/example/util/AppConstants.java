@@ -13,7 +13,7 @@ public class AppConstants {
 
     public static final String MAIL_ACC = "makej.tatyana@mail.ru";
 
-    public static final String MAIL_PWD = "UsersEPeN2yPYQdDvNgj";
+    public static final String MAIL_PWD = "pQuXWfkNAqum3YPMZv07";
 
     public static final String SECRET_KEY_1 = "ssdkF$HUy2A#D%kd";
     public static final String SECRET_KEY_2 = "weJiSEvR5yAC5ftB";
