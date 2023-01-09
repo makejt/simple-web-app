@@ -6,27 +6,22 @@
 </head>
 <body>
 
-<form action='login' method='post'>
+<form action='changePsw' method='post'>
     <label for='email'>Email:</label><br>
     <input type='email' id='email' name='email' value='John@gmail.com' required><br>
+
     <label for='psw'>Password:</label><br>
     <input type='password' id='psw' name='psw' value=’’required ><br><br>
 
-    <input type='submit' value='Login'>
-</form>
+    <label for='psw1'>New password:</label><br>
+    <input type='password' id='psw1' name='psw1' value=’’required ><br><br>
 
-<br><br>
+    <label for='psw2'>Repeat new password:</label><br>
+    <input type='password' id='psw2' name='psw2' value=’’required ><br><br>
 
-
-<form action='changePsw' method='get'>
     <input type='submit' value='Change password'>
 </form>
 
-<br><br>
-
-<form action='forgotPsw' method='get'>
-    <input type='submit' value='Forgot password?'>
-</form>
 
 
 </body>

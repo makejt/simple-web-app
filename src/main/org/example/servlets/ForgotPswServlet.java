@@ -15,11 +15,14 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static org.example.util.AppConstants.DB_URL;
+
 @WebServlet("/forgotPsw")
 public class ForgotPswServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html;charset=UTF-8");
         RequestDispatcher dispatcher = req.getRequestDispatcher("forgotPsw.html");
         dispatcher.forward(req, resp);
     }
@@ -49,7 +52,7 @@ public class ForgotPswServlet extends HttpServlet {
             String encryptTempPsw = EncryptDecryptUtils.encrypt(tempPsw);
             String UPDATE_PSW = "UPDATE user SET password = '" + encryptTempPsw + "' WHERE email = '" + email + "'";
 
-                try(Connection connection = DBUtils.getConnection()) {
+                try(Connection connection = DBUtils.getConnection(DB_URL)) {
                     Statement statement = connection.createStatement();
                     statement.executeUpdate(UPDATE_PSW); }
              catch (SQLException e) {

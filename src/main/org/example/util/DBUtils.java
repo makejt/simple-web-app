@@ -5,13 +5,13 @@ import java.sql.*;
 import static org.example.util.AppConstants.*;
 
 public class DBUtils {
-    public static Connection getConnection() {
+    public static Connection getConnection(String URL) {
 
         Connection connection = null;
 
         try {
             Class.forName(DRIVER);
-            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            connection = DriverManager.getConnection(URL, DB_USER, DB_PASSWORD);
             } catch (SQLException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }

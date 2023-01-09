@@ -1,10 +1,13 @@
 package org.example.dao;
 
 import org.example.model.User;
+import org.example.util.AppConstants;
 import org.example.util.DBUtils;
 
 import java.sql.*;
 import java.util.Set;
+
+import static org.example.util.AppConstants.DB_URL;
 
 public class UsersDAO extends AbstractDAO<User>{
 
@@ -13,7 +16,7 @@ public class UsersDAO extends AbstractDAO<User>{
 
         String sql = "INSERT INTO user (name, email, password) VALUES (?, ?, ?)";
 
-        try(Connection connection = DBUtils.getConnection();
+        try(Connection connection = DBUtils.getConnection(DB_URL);
             PreparedStatement pstmt = connection.prepareStatement(sql);) {
 
           pstmt.setString(1, user.getName());
@@ -24,7 +27,6 @@ public class UsersDAO extends AbstractDAO<User>{
               System.out.println("User was added in DB successfully");
               return true;
           }
-          // должен вернуть 1, мы добавляем строго одного пользователя
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -36,22 +38,15 @@ public class UsersDAO extends AbstractDAO<User>{
 
     @Override
     public boolean update(User user) {
-
-
-
-
         return false;
     }
-
-
-
 
     @Override
     public boolean delete(User user) {
         return false;
     }
     @Override
-    public User getById(User user) {
+    public User getById(int id) {
         return null;
     }
     @Override
@@ -64,7 +59,7 @@ public class UsersDAO extends AbstractDAO<User>{
         Statement st = null;
         ResultSet rs = null;
 
-        Connection connection = DBUtils.getConnection();
+        Connection connection = DBUtils.getConnection(DB_URL);
 
         String select = "SELECT * FROM user WHERE email = '" + email + "'";
 
@@ -89,4 +84,7 @@ public class UsersDAO extends AbstractDAO<User>{
         }
         return user;
     }
+
+
+
 }
