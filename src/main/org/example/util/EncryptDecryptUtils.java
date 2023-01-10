@@ -64,7 +64,7 @@ public class EncryptDecryptUtils {
         System.out.println(encrPass);
         System.out.println(encrPass.getClass());
 
-        System.out.println(EncryptDecryptUtils.decrypt(encrPass));
+        System.out.println(EncryptDecryptUtils.decrypt("rq40DAMvUF4nyP1xxKEKwA=="));
     }
 }
 
