@@ -1,13 +1,16 @@
 package org.example.dao;
 
+import org.example.model.Region;
 import org.example.model.User;
 import org.example.util.AppConstants;
 import org.example.util.DBUtils;
 
 import java.sql.*;
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.example.util.AppConstants.DB_URL;
+import static org.example.util.AppConstants.DB_URL1;
 
 public class UsersDAO extends AbstractDAO<User>{
 
@@ -51,7 +54,42 @@ public class UsersDAO extends AbstractDAO<User>{
     }
     @Override
     public Set<User> getAll() {
-        return null;
+        Set<User> users = new HashSet<User>();
+        User user = null;
+        Statement st = null;
+        ResultSet rs = null;
+        Connection connection = null;
+
+        String selectAll = "SELECT * FROM user";
+
+        try {
+            connection = DBUtils.getConnection(DB_URL);
+            st = connection.createStatement();
+            rs = st.executeQuery(selectAll);
+
+            while (rs.next()) {
+                user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setEmail(rs.getString("email"));
+                user.setPsw(rs.getString("password"));
+                user.set_active(rs.getString("is_active").equalsIgnoreCase("Y"));
+                user.setUpdateTs(rs.getTimestamp("updated_ts"));
+                user.setCreatedTs(rs.getTimestamp("created_ts"));
+                //дописать 2 поля
+                users.add(user);
+            }
+        }
+        catch (RuntimeException exception) {
+            System.out.println(exception);
+        } catch (SQLException exception) {
+            System.out.println(exception);
+        }
+
+        finally {
+            DBUtils.release(connection, st, null, rs);
+        }
+        return users;
     }
 
     public User getByEmail(String email) {

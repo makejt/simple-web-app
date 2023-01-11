@@ -12,16 +12,12 @@ import java.util.Date;
 
 @WebFilter("/*")
 public class LogFilter extends HttpFilter {
-
     private static final String PRINT_PATTERN = "%s : %s [%s] {%s} %s %s %s";
-
 
     @Override
     public void init() throws ServletException {
         System.out.println("Init LogFilter");
     }
-
-
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
             throws IOException, ServletException {
@@ -35,14 +31,10 @@ public class LogFilter extends HttpFilter {
         System.out.println(String.format(PRINT_PATTERN, new Date().toString(),
                 "INFO", Thread.currentThread().getName(), sessionId, servletPath, uri, url));
         chain.doFilter(req, res);
-
     }
 
     @Override
     public void destroy() {
         System.out.println("Destroy LogFilter");
     }
-
-
-
 }
