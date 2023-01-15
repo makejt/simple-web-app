@@ -1,19 +1,12 @@
 package org.example.dao;
 
-import org.example.model.Region;
 import org.example.model.User;
-import org.example.util.AppConstants;
 import org.example.util.DBUtils;
-
 import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
-
 import static org.example.util.AppConstants.DB_URL;
-import static org.example.util.AppConstants.DB_URL1;
-
 public class UsersDAO extends AbstractDAO<User>{
-
     @Override
     public boolean insert(User user) {
 
@@ -37,8 +30,6 @@ public class UsersDAO extends AbstractDAO<User>{
         }
         return false;
     }
-
-
     @Override
     public boolean update(User user) {
         return false;
@@ -49,7 +40,7 @@ public class UsersDAO extends AbstractDAO<User>{
         return false;
     }
     @Override
-    public User getById(int id) {
+    public User getById(User user) {
         return null;
     }
     @Override
@@ -58,9 +49,11 @@ public class UsersDAO extends AbstractDAO<User>{
         User user = null;
         Statement st = null;
         ResultSet rs = null;
+
         Connection connection = null;
 
-        String selectAll = "SELECT * FROM user";
+        String selectAll = "SELECT user.id, user.name, email, password, is_active, created_ts, updated_ts, " +
+                "offices.id as office_id FROM user JOIN offices ON id_office = offices.id";
 
         try {
             connection = DBUtils.getConnection(DB_URL);
@@ -73,10 +66,11 @@ public class UsersDAO extends AbstractDAO<User>{
                 user.setName(rs.getString("name"));
                 user.setEmail(rs.getString("email"));
                 user.setPsw(rs.getString("password"));
+                user.setOffice(new OfficeDAO().getOfficeById(rs.getInt("office_id")));
                 user.set_active(rs.getString("is_active").equalsIgnoreCase("Y"));
-                user.setUpdateTs(rs.getTimestamp("updated_ts"));
                 user.setCreatedTs(rs.getTimestamp("created_ts"));
-                //дописать 2 поля
+                user.setUpdateTs(rs.getTimestamp("updated_ts"));
+                user.setRoles(new RoleDAO().getRolesByUserId(rs.getInt("id")));
                 users.add(user);
             }
         }
@@ -85,13 +79,11 @@ public class UsersDAO extends AbstractDAO<User>{
         } catch (SQLException exception) {
             System.out.println(exception);
         }
-
         finally {
             DBUtils.release(connection, st, null, rs);
         }
         return users;
     }
-
     public User getByEmail(String email) {
         User user = null;
         Statement st = null;
@@ -122,7 +114,4 @@ public class UsersDAO extends AbstractDAO<User>{
         }
         return user;
     }
-
-
-
 }

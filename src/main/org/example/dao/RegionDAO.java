@@ -1,6 +1,7 @@
 package org.example.dao;
 
 import org.example.model.Region;
+import org.example.model.User;
 import org.example.util.DBUtils;
 
 import java.sql.*;
@@ -40,14 +41,19 @@ public class RegionDAO extends AbstractDAO<Region>{
     }
 
     @Override
+    public Region getById(Region region) {
+        return null;
+    }
+
+    @Override
     public boolean delete(Region region) {
         return false;
     }
-    @Override
+
     public Region getById(int id) {
-        Region region = null;
         Statement st = null;
         ResultSet rs = null;
+        Region region = null;
 
         Connection connection = DBUtils.getConnection(DB_URL1);
 

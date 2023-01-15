@@ -1,9 +1,10 @@
 <%@ page import="org.example.model.User" %>
 <%@ page import="java.util.Set" %>
+<%@ page import="org.example.model.Role" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Crazy Users List</title>
+    <title>Users List</title>
     <style>
         table {
             font-family: arial, sans-serif;
@@ -30,11 +31,11 @@
         <th>NAME</th>
         <th>EMAIL</th>
         <th>PASSWORD</th>
-        <th>OFFICE</th> <!-- ADD href view offices-->
+        <th>OFFICE</th>
+        <th>ROLE</th>
         <th>ACTIVE</th>
         <th>LAST UPDATED</th>
         <th>CREATED</th>
-  <!-- ADD ROLES HEADER href  role-->
     </tr>
 
     <%
@@ -45,9 +46,13 @@
         <td><%=user.getName()%></td>
         <td><%=user.getEmail()%></td>
         <td><%=user.getPsw()%></td>
-        <td>TO DO</td>
-        <td>TO DO</td>
-        <td><%=user.is_active()? "Yes":"No"%></td>
+        <td><%=user.getOffice().getName()%> <a href="office"> more info here </a> </td>
+
+        <td><%
+        for (Role role: user.getRoles()) { %>
+            <%=role.getName()%>
+            <% } %> <a href="role"> more info here </a> </td>
+       <td><%=user.is_active()? "Yes":"No"%></td>
         <td><%=user.getUpdateTs()%></td>
         <td><%=user.getCreatedTs()%></td>
 
