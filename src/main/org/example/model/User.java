@@ -18,4 +18,11 @@ public class User {
     private Set<Role> roles;
     private Office office;
 
+    public boolean getIsActive() {
+        return is_active;
+    }
+
+    public boolean isActive() {
+        return is_active;
+    }
 }

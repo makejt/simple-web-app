@@ -9,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/welcome")
@@ -22,8 +21,11 @@ public class WelcomeServlet extends HttpServlet {
 
         User user = ServletUtils.getSessionUser(req);
 
-        resp.getWriter().println("<b> Welcome back, " +
-                (user != null ? user.getName() + " <a href = 'logout'> LOGOUT</a>" : "Stranger" ) + "</b>");
+        RequestDispatcher rd = req.getRequestDispatcher("jsp/welcome.jsp");
+        rd.forward(req, resp);
+
+//        resp.getWriter().println("<b> Welcome back, " +
+//                (user != null ? user.getName() + " <a href = 'logout'> LOGOUT</a>" : "Stranger" ) + "</b>");
     }
 
     @Override

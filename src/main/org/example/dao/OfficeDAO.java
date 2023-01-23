@@ -3,10 +3,7 @@ package org.example.dao;
 import org.example.model.Office;
 import org.example.util.DBUtils;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -93,5 +90,31 @@ public class OfficeDAO extends AbstractDAO{
             DBUtils.release(connection, st, null, rs);
         }
         return offices;
+    }
+
+    public Office getOfficeByLocation (String location) {
+
+        String select = "SELECT * FROM offices WHERE location = ?";
+        Office office = null;
+
+        try (Connection connection = DBUtils.getConnection(DB_URL);
+             PreparedStatement preparedStatement = connection.prepareStatement(select)) {
+
+            preparedStatement.setString(1, location);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                office = new Office();
+                office.setId(rs.getInt("id"));
+                office.setName(rs.getString("name"));
+                office.setLocation(location);
+                office.setPhone(rs.getString("phone"));
+                office.setFax(rs.getString("fax"));
+            }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            throw new RuntimeException(exception);
+        }
+        return office;
     }
 }
